@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "Twitter 'Likes' Hider",
+  "description": "This extension hides 'so-and-so liked' Tweets from your main Twitter feed.",
+  "version": "0.9",
+
+  "page_action": {
+    "default_icon": "icon.png"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*"],
+      "js": ["content_script.js"]
+    }
+  ],
+
+
+  "permissions": [
+    "webNavigation",
+    "https://twitter.com/*"
+  ]
+
+
+}
