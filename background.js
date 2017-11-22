@@ -3,9 +3,8 @@ let totalRemoved = 0;
 const onNavToTwitter = (e) => {
     //console.log("onWebNavComplete", e);
     const tabId = e.tabId;
-    chrome.pageAction.show(tabId);
 
-    chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, function (response) {
+    const onResponse = (response) => {
         //console.log(response);
         switch (response.type) {
             case "notMain":
@@ -15,6 +14,7 @@ const onNavToTwitter = (e) => {
             case "numRemoved":
                 totalRemoved += response.value;
 
+                chrome.pageAction.show(tabId);
                 if (response.value) console.log("removed likes:", totalRemoved);
                 break;
 
@@ -22,7 +22,9 @@ const onNavToTwitter = (e) => {
                 console.error(`unknown response`, response);
                 break;
         }
-    });
+   };
+
+    chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, onResponse);
 };
 
 
