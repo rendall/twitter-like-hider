@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Twitter 'Likes' Hider",
   "short_name": "Likes Hider",
-  "description": "This is a chrome extension for Twitter that hides those 'so-and-so liked this' tweets that mess up your carefully curated Twitter feed.",
+  "description": "A Chrome extension for Twitter that hides those 'so-and-so liked this' tweets that mess up your carefully curated Twitter feed.",
   "version": "0.9",
   "page_action": {
     "default_icon": {
