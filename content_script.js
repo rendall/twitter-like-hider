@@ -1,21 +1,13 @@
-// chrome.browserAction.onClicked.addListener(function (tab) {
-//     chrome.tabs.executeScript({
-//         code: 'document.body.style.backgroundColor="red"'
-//     });
-// });
-
-//console.log("twitterLikeHider");
+const TWEET_LIKE_SELECTOR = ".tweet-context.with-icn";
+//const TWEET_HIDE_CLASS = "tweetLikeHide";
 const isMainFeed = () => document.location.href == "https://twitter.com/" || document.location.href == "https://twitter.com"; 
 
-const removeLikeTweets = () => {
+const hideLikeTweets = () => {
 
   const isMain = isMainFeed();
-  //console.log("isMainFeed?", isMain);
-  if (!isMainFeed()) return;
+  if (!isMain) return;
 
-
-
-  const likeTweets = document.querySelectorAll(".tweet-context.with-icn");
+  const likeTweets = document.querySelectorAll(TWEET_LIKE_SELECTOR);
   const likeTweetsArray = Array.from(likeTweets).map((i) => i.parentElement.parentElement).filter(i => i.style.display !== "none");
   const likeTweetsNum = likeTweetsArray.length;
   
@@ -32,7 +24,7 @@ const onMessage = (request, sender, sendResponse) => {
   //console.log("isMainFeed?", isMain);
 
   if (isMain) {
-    const numTweets = removeLikeTweets();
+    const numTweets = hideLikeTweets();
     sendResponse({type:"numRemoved", value:numTweets});
   }
   else sendResponse({type:"notMain"});
