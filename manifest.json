@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Twitter 'Likes' Hider",
   "short_name": "Likes Hider",
-  "description": "On occasion Twitter will show you a tweet that someone you follow 'likes'. This extension provides a toggle to hide them.",
+  "description": "Twitter sometimes shows you tweets that people you follow 'like'. This extension provides a toggle to hide those.",
   "version": "1.0",
   "page_action": {
     "default_icon": {
