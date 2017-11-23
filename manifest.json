@@ -9,6 +9,11 @@
       "16": "icon-16.png",
       "24": "icon-24.png",
       "32": "icon-32.png"
+    },
+    "off_icon": {
+      "16": "icon-off-16.png",
+      "24": "icon-off-24.png",
+      "32": "icon-off-32.png"
     }
   },
   "icons": {
