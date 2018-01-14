@@ -1,4 +1,5 @@
 const TWEET_LIKE_SELECTOR = ".tweet-context.with-icn span.Icon.Icon--small.Icon--heartBadge";
+const TWEET_FOLLOWS_SELECTOR = ".tweet-context.with-icn span.Icon.Icon--small.Icon--follower";
 const TWEET_HIDE_CLASS = "twitterLikeHider";
 const isMainFeed = () => document.location.href == "https://twitter.com/" || document.location.href == "https://twitter.com";
 
@@ -9,7 +10,7 @@ const hideLikeTweets = () => {
   const isMain = isMainFeed();
   if (!isMain) return;
 
-  const likeTweets = document.querySelectorAll(TWEET_LIKE_SELECTOR);
+  const likeTweets = document.querySelectorAll(TWEET_LIKE_SELECTOR + "," + TWEET_FOLLOWS_SELECTOR);
   const likeTweetsArray = Array.from(likeTweets).map((i) => i.parentElement.parentElement.parentElement).filter(i => !i.classList.contains(TWEET_HIDE_CLASS));
   const likeTweetsNum = likeTweetsArray.length;
 
