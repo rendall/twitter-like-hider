@@ -1,9 +1,9 @@
 {
+  "version": "1.2",
   "manifest_version": 2,
   "name": "Twitter 'Likes' Hider",
   "short_name": "Likes Hider",
   "description": "Twitter sometimes shows you tweets that people whom you follow 'like' or 'follow'. This extension provides a toggle to hide those.",
-  "version": "1.1",
   "page_action": {
     "default_icon": {
       "16": "icon-16.png",
@@ -43,6 +43,7 @@
   ],
   "permissions": [
     "webNavigation",
+    "alarms",
     "https://twitter.com/*"
   ]
 }

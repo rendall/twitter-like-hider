@@ -28,13 +28,16 @@ const showLikeTweets = () => {
 }
 
 const onMessage = (message, sender, sendResponse) => {
+  console.log("onMessage", message);
   switch (message.type) {
     case 'toggle':
-      isOn = !isOn; // no break deliberate
+      isOn = !isOn;
       if (!isOn) {
         const numTweets = showLikeTweets();
       }
+    // no break deliberate
     case 'webNavigation':
+    case 'alarm':
       if (!isOn) {
         sendResponse({ type: "isOff" });
         break;
@@ -43,6 +46,7 @@ const onMessage = (message, sender, sendResponse) => {
       const isMain = isMainFeed();
       if (isMain) {
         const numTweets = hideLikeTweets();
+
         if (numTweets) {
           sendResponse({ type: "removedLikes", value: numTweets });
         }
