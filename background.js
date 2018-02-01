@@ -20,7 +20,7 @@ let totalRemoved = 0;
 
 // These responses are sent by content_script.js
 const onResponse = (tabId) => (response) => {
-    console.log("onResponse:", response, tabId);
+    //console.log("onResponse:", response, tabId);
     if (response) switch (response.type) {
         case "isOff":
             totalRemoved = 0;
@@ -79,7 +79,7 @@ const onAlarm = (alarm) => {
     if (alarmName.indexOf('-') < 0) return;
     const tabId = parseInt(alarmName.split('-')[1]);
     chrome.tabs.sendMessage(tabId, { type: "alarm" }, onResponse(tabId));
-    console.log("onAlarm:", alarm);
+    //console.log("onAlarm:", alarm);
 }
 
 const onNavToTwitter = (e) => {

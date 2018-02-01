@@ -28,7 +28,7 @@ const showLikeTweets = () => {
 }
 
 const onMessage = (message, sender, sendResponse) => {
-  console.log("onMessage", message);
+  //console.log("onMessage", message);
   switch (message.type) {
     case 'toggle':
       isOn = !isOn;
