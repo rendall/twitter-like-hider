@@ -1,5 +1,7 @@
 # Twitter 'Likes' Hider
 
+_It seems that Twitter may have eliminated the need for this? I personally no longer see these sorts of posts in my Chrome feed anymore.  This needs confirmation, so if you have insight one way or another [please let me know](https://github.com/rendall/twitter-like-hider/issues/2)._
+
 ## TL;DR ## 
 While you can block, mute and mute retweets, on occasion Twitter will show you what someone you follow 'likes' or 'follows', and there is no way to mute that. This extension will hide those 'like' and 'follow' tweets, and let you toggle them on and off.
 
