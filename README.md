@@ -36,3 +36,8 @@ The creator of **Twitter 'Likes' Hider** has zero interest in tracking you. Your
 
 ## Have a comment? Question? Feature request? ##
 My preference is that you create an issue ticket on Github, here: https://github.com/rendall/twitter-like-hider/issues Just click the 'New issue' button and type away. 
+
+## Open Source! ##
+This extension is open source, which means you can see how it works yourself and even contribute to the project. 
+More details here: https://github.com/rendall/twitter-like-hider
+
