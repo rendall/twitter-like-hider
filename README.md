@@ -17,7 +17,7 @@ Until now.
 Note that **Twitter 'Likes' Hider** works only on your main Twitter feed. If you visit a profile and see something horrible that they like, well, you have only yourself to blame, don't you.
 
 ## Installation ##
-Simply install the extension on Chrome via the Web Store link below, or download / clone the source code into a local directory, and then follow these instructions from Google to install it on your browser as a developer.  https://developer.chrome.com/extensions/getstarted#unpacked
+Install the extension on Chrome via the Web Store link below, or download / clone the source code into a local directory, and then follow these instructions from Google to install it on your browser as a developer.  https://developer.chrome.com/extensions/getstarted#unpacked
 
 On the Chrome Web Store:
 https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj
