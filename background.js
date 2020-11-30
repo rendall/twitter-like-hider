@@ -18,7 +18,8 @@ From the chrome api, the extension needs to know:
 const ALARM_PREFIX = "twitterLikeHiderAlarm";
 let totalRemoved = 0;
 
-// These responses are sent by content_script.js
+/** onResponse receives and handles messages from content_script.js
+ **/
 const onResponse = (tabId) => (response) => {
   if (response)
     switch (response.type) {
@@ -45,13 +46,12 @@ const onResponse = (tabId) => (response) => {
         break;
       case "isOn":
       case "isMain":
-        if (totalRemoved > 0)
-          chrome.pageAction.setTitle({
-            title: `Hiding ${totalRemoved} ${
-              totalRemoved === 1 ? "like" : "likes"
-            }`,
-            tabId: tabId,
-          });
+        chrome.pageAction.setTitle({
+          title: `Hiding ${totalRemoved} ${
+            totalRemoved === 1 ? "like" : "likes"
+          }`,
+          tabId: tabId,
+        });
         chrome.pageAction.setIcon({
           path: {
             16: "icon-16.png",
@@ -60,10 +60,6 @@ const onResponse = (tabId) => (response) => {
           },
           tabId: tabId,
         });
-        // Twitter adds information after the webNavigation event fires.
-        // So, the extension will check the page frequently via the 'chrome.alarm' API.
-
-        // First, create a new alarm or overwrite the old one.
         createOrContinueAlarm(tabId);
         break;
       default:
@@ -76,11 +72,15 @@ const createOrContinueAlarm = (tabId) => {
   const alarmName = `${ALARM_PREFIX}-${tabId}`;
   const onAlarmDetails = (alarm) => {
     if (alarm === undefined)
-      chrome.alarms.create(alarmName, { when: 1500, periodInMinutes: 1 });
+      // If the user does not scroll, give Twitter 7.5 seconds to load
+      // and then trigger a removal of tweets:
+      chrome.alarms.create(alarmName, { when: 7500, periodInMinutes: 1 });
   };
   chrome.alarms.get(alarmName, onAlarmDetails);
 };
 
+/** The user clicking the entension icon turns the extension on
+ * and off */
 const onIconClicked = (e) => {
   const tabId = e.id;
   chrome.tabs.sendMessage(tabId, { type: "toggle" }, onResponse(tabId));
@@ -91,14 +91,12 @@ const onAlarm = (alarm) => {
   if (alarmName.indexOf("-") < 0) return;
   const tabId = parseInt(alarmName.split("-")[1]);
   chrome.tabs.sendMessage(tabId, { type: "alarm" }, onResponse(tabId));
-  //console.log("onAlarm:", alarm);
 };
 
 const onNavToTwitter = (e) => {
   const tabId = e.tabId;
   chrome.pageAction.show(tabId);
   chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, onResponse(tabId));
-  // chrome.alarms.onAlarm.addListener(onAlarm(tabId));
 };
 
 chrome.webNavigation.onCompleted.addListener(onNavToTwitter, {
