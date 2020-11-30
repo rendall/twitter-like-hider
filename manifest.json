@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.5.0",
   "manifest_version": 2,
   "name": "Twitter 'Likes' Hider",
   "short_name": "Likes Hider",
@@ -23,27 +23,15 @@
   },
   "homepage_url": "https://github.com/rendall/twitter-like-hider",
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": false
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://twitter.com/*"
-      ],
-      "js": [
-        "content_script.js"
-      ],
-      "css": [
-        "content_script.css"
-      ]
+      "matches": ["https://twitter.com/*"],
+      "js": ["content_script.js"],
+      "css": ["content_script.css"]
     }
   ],
-  "permissions": [
-    "webNavigation",
-    "alarms",
-    "https://twitter.com/*"
-  ]
+  "permissions": ["webNavigation", "alarms", "https://twitter.com/*"]
 }
