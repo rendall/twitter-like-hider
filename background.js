@@ -20,76 +20,89 @@ let totalRemoved = 0;
 
 // These responses are sent by content_script.js
 const onResponse = (tabId) => (response) => {
-    //console.log("onResponse:", response, tabId);
-    if (response) switch (response.type) {
-        case "isOff":
-            totalRemoved = 0;
-            chrome.pageAction.setTitle({ title: `Showing all likes`, tabId: tabId });
-            chrome.pageAction.setIcon({
-                path: {
-                    "16": "icon-off-16.png",
-                    "24": "icon-off-24.png",
-                    "32": "icon-off-32.png"
-                },
-                tabId: tabId
-            });
-        case "notMain":
-            chrome.alarms.clearAll();
-            break;
-        case "removedLikes":
-            totalRemoved += response.value;
-        case "isMain":
-            if (totalRemoved > 0) chrome.pageAction.setTitle({ title: `Hiding ${totalRemoved} ${totalRemoved === 1 ? "like" : "likes"}`, tabId: tabId });
-            chrome.pageAction.setIcon({
-                path: {
-                    "16": "icon-16.png",
-                    "24": "icon-24.png",
-                    "32": "icon-32.png"
-                },
-                tabId: tabId
-            });
-            // Twitter adds information after the webNavigation event fires.
-            // So, the extension will check the page frequently via the 'chrome.alarm' API.
+  if (response)
+    switch (response.type) {
+      case "isOff":
+        totalRemoved = 0;
+        chrome.pageAction.setTitle({
+          title: `Showing all likes`,
+          tabId: tabId,
+        });
+        chrome.pageAction.setIcon({
+          path: {
+            16: "icon-off-16.png",
+            24: "icon-off-24.png",
+            32: "icon-off-32.png",
+          },
+          tabId: tabId,
+        });
+        break;
+      case "notMain":
+        chrome.alarms.clearAll();
+        break;
+      case "removedLikes":
+        totalRemoved = response.value;
+        break;
+      case "isOn":
+      case "isMain":
+        if (totalRemoved > 0)
+          chrome.pageAction.setTitle({
+            title: `Hiding ${totalRemoved} ${
+              totalRemoved === 1 ? "like" : "likes"
+            }`,
+            tabId: tabId,
+          });
+        chrome.pageAction.setIcon({
+          path: {
+            16: "icon-16.png",
+            24: "icon-24.png",
+            32: "icon-32.png",
+          },
+          tabId: tabId,
+        });
+        // Twitter adds information after the webNavigation event fires.
+        // So, the extension will check the page frequently via the 'chrome.alarm' API.
 
-            // First, create a new alarm or overwrite the old one. 
-            createOrContinueAlarm(tabId);
-            break;
-        default:
-            console.error(`unknown response`, response);
-            break;
+        // First, create a new alarm or overwrite the old one.
+        createOrContinueAlarm(tabId);
+        break;
+      default:
+        console.error(`unknown response`, response);
+        break;
     }
 };
 
 const createOrContinueAlarm = (tabId) => {
-    const alarmName = `${ALARM_PREFIX}-${tabId}`;
-    const onAlarmDetails = (alarm) => {
-        if (alarm === undefined) chrome.alarms.create(alarmName, { when: 1500, periodInMinutes: 1 });
-    }
-    chrome.alarms.get(alarmName, onAlarmDetails);
-
-}
-
-const onIconClicked = (e) => {
-    const tabId = e.id;
-    chrome.tabs.sendMessage(tabId, { type: "toggle" }, onResponse(tabId));
-}
-
-const onAlarm = (alarm) => {
-    const alarmName = alarm.name;
-    if (alarmName.indexOf('-') < 0) return;
-    const tabId = parseInt(alarmName.split('-')[1]);
-    chrome.tabs.sendMessage(tabId, { type: "alarm" }, onResponse(tabId));
-    //console.log("onAlarm:", alarm);
-}
-
-const onNavToTwitter = (e) => {
-    const tabId = e.tabId;
-    chrome.pageAction.show(tabId);
-    chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, onResponse(tabId));
-    // chrome.alarms.onAlarm.addListener(onAlarm(tabId));
+  const alarmName = `${ALARM_PREFIX}-${tabId}`;
+  const onAlarmDetails = (alarm) => {
+    if (alarm === undefined)
+      chrome.alarms.create(alarmName, { when: 1500, periodInMinutes: 1 });
+  };
+  chrome.alarms.get(alarmName, onAlarmDetails);
 };
 
+const onIconClicked = (e) => {
+  const tabId = e.id;
+  chrome.tabs.sendMessage(tabId, { type: "toggle" }, onResponse(tabId));
+};
 
-chrome.webNavigation.onCompleted.addListener(onNavToTwitter, { url: [{ hostContains: 'twitter.com' }] });
+const onAlarm = (alarm) => {
+  const alarmName = alarm.name;
+  if (alarmName.indexOf("-") < 0) return;
+  const tabId = parseInt(alarmName.split("-")[1]);
+  chrome.tabs.sendMessage(tabId, { type: "alarm" }, onResponse(tabId));
+  //console.log("onAlarm:", alarm);
+};
+
+const onNavToTwitter = (e) => {
+  const tabId = e.tabId;
+  chrome.pageAction.show(tabId);
+  chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, onResponse(tabId));
+  // chrome.alarms.onAlarm.addListener(onAlarm(tabId));
+};
+
+chrome.webNavigation.onCompleted.addListener(onNavToTwitter, {
+  url: [{ hostContains: "twitter.com" }],
+});
 chrome.pageAction.onClicked.addListener(onIconClicked);
 chrome.alarms.onAlarm.addListener(onAlarm);
