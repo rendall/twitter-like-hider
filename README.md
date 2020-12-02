@@ -1,6 +1,7 @@
 # Twitter 'Likes' Hider
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/price/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
 
 ## TL;DR
 
