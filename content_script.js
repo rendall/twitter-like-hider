@@ -36,6 +36,11 @@ const isMainFeed = () =>
 // isOn holds the on-off state of the extension, toggled when the
 // user clicks the icon
 let isOn = true;
+// scrollTimeout holds the value for the onScroll event
+let scrollTimeout;
+// holds the number of likeTweets removed
+let likeTweetsNum = 0;
+
 
 const hideLikeTweets = () => {
   const isMain = isMainFeed();
@@ -52,16 +57,13 @@ const hideLikeTweets = () => {
       )
   );
   offendingTweets.forEach((tweet) => tweet.classList.add(TWEET_HIDE_CLASS));
-  const likeTweetsNum = offendingTweets.length;
-  return likeTweetsNum;
+  likeTweetsNum = offendingTweets.length;
 };
 const showLikeTweets = () => {
   const hiddenLikeTweets = document.querySelectorAll(`.${TWEET_HIDE_CLASS}`);
   hiddenLikeTweets.forEach((i) => i.classList.remove(TWEET_HIDE_CLASS));
   return hiddenLikeTweets.length;
 };
-
-let scrollTimeout;
 
 /**
  * onMessage receives and handles messages from 'background.js', and
@@ -71,10 +73,8 @@ const onMessage = (message, sender, sendResponse) => {
   const onScrollEnd = () => {
     // When the user *stops* scrolling, search for and hide any
     // offending tweet
-    if (isOn) {
-      const likeTweetsNum = hideLikeTweets();
-      sendResponse({ type: "removedLikes", value: likeTweetsNum });
-    }
+    if (isOn) hideLikeTweets();
+
   };
 
   const onScrollListener = (e) => {
@@ -99,14 +99,11 @@ const onMessage = (message, sender, sendResponse) => {
         sendResponse({ type: "isOff" });
         break;
       }
-      sendResponse({ type: "isOn" });
       const isMain = isMainFeed();
       if (isMain) {
         document.addEventListener("scroll", onScrollListener);
-        sendResponse({ type: "isMain" });
         hideLikeTweets();
-      } else {
-        sendResponse({ type: "notMain" });
+        sendResponse({ type: "isOn", value:likeTweetsNum });
       }
       break;
     default:

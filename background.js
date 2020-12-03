@@ -37,19 +37,13 @@ const onResponse = (tabId) => (response) => {
           },
           tabId: tabId,
         });
-        break;
-      case "notMain":
         chrome.alarms.clearAll();
         break;
-      case "removedLikes":
-        totalRemoved = response.value;
-        break;
       case "isOn":
-      case "isMain":
+        totalRemoved = response.value;
         chrome.pageAction.setTitle({
-          title: `Hiding ${totalRemoved} ${
-            totalRemoved === 1 ? "like" : "likes"
-          }`,
+          title: `Hiding ${totalRemoved} ${totalRemoved === 1 ? "tweet" : "tweets"
+            }`,
           tabId: tabId,
         });
         chrome.pageAction.setIcon({
