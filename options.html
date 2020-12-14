@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitter 'Likes' Hider options</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0;
+      }
+
+      p {
+        margin: 0;
+        margin-top: 1rem;
+      }
+
+      p:first-of-type {
+        margin-top: 0;
+      }
+
+      label {
+        display: inline-block;
+        width: 5rem;
+        margin-left: 1rem;
+      }
+
+      label[for="store"] {
+        width: max-content;
+      }
+
+      div#status {
+        font-size: 1rem;
+        font-weight: bold;
+        margin: 1rem;
+        min-height: 2rem;
+        text-align: center;
+        color: gray;
+      }
+
+      div#status.success {
+        color: mediumseagreen;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>Check the box to hide these sorts of Tweets:</p>
+    <div>
+      <label for="likes">Likes:</label
+      ><input type="checkbox" id="likes" name="likes" />
+    </div>
+    <div>
+      <label for="follows">Follows:</label
+      ><input type="checkbox" id="follows" name="follows" />
+    </div>
+    <div>
+      <label for="retweeted">Retweeted:</label
+      ><input type="checkbox" id="retweeted" name="retweeted" />
+    </div>
+    <div>
+      <label for="retweeted">Received a reply:</label
+      ><input type="checkbox" id="received" name="received" />
+    </div>
+    <p>Check here to keep these options (may require permission)</p>
+    <div>
+      <label for="store">Keep my options:</label>
+      <input type="checkbox" id="store" />
+    </div>
+    <div id="status"></div>
+    <button id="apply-button">Apply</button>
+    <script src="options.js"></script>
+  </body>
+</html>
