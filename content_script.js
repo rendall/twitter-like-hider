@@ -26,6 +26,8 @@ const RETWEET_ICON =
   "M23.615 15.477c-.47-.47-1.23-.47-1.697 0l-1.326 1.326V7.4c0-2.178-1.772-3.95-3.95-3.95h-5.2c-.663 0-1.2.538-1.2 1.2s.537 1.2 1.2 1.2h5.2c.854 0 1.55.695 1.55 1.55v9.403l-1.326-1.326c-.47-.47-1.23-.47-1.697 0s-.47 1.23 0 1.697l3.374 3.375c.234.233.542.35.85.35s.613-.116.848-.35l3.375-3.376c.467-.47.467-1.23-.002-1.697zM12.562 18.5h-5.2c-.854 0-1.55-.695-1.55-1.55V7.547l1.326 1.326c.234.235.542.352.848.352s.614-.117.85-.352c.468-.47.468-1.23 0-1.697L5.46 3.8c-.47-.468-1.23-.468-1.697 0L.388 7.177c-.47.47-.47 1.23 0 1.697s1.23.47 1.697 0L3.41 7.547v9.403c0 2.178 1.773 3.95 3.95 3.95h5.2c.664 0 1.2-.538 1.2-1.2s-.535-1.2-1.198-1.2z";
 const RECEIVED_REPLY_ICON =
   "M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788z";
+const BLUE_CHECK_ICON =
+  "M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z";
 // TARGET_ICON_PATHS
 
 // This is the name of the CSS class that is added to targeted tweets:
@@ -47,16 +49,18 @@ let likeTweetsNum = 0;
 let options = {
   follows: true,
   likes: true,
-  retweeted: false,
   received: false,
+  retweeted: false,
   store: false,
+  verified: false,
 };
 // map options to icons
 const optionMap = {
   follows: FOLLOW_ICON,
   likes: HEART_ICON,
-  retweeted: RETWEET_ICON,
   received: RECEIVED_REPLY_ICON,
+  retweeted: RETWEET_ICON,
+  verified: BLUE_CHECK_ICON
 };
 
 // Restores select box and checkbox state using the preferences
@@ -157,7 +161,9 @@ const onMessage = (message, sender, sendResponse) => {
         hideLikeTweets();
         sendResponse({ type: "isOn", value: likeTweetsNum });
       }
-      console.log(`TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`);
+      console.log(
+        `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`
+      );
       break;
 
     case "optionChange":
