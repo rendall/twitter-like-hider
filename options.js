@@ -24,7 +24,7 @@ function applyOptions() {
         if (isPermitted) {
           // Local storage is permitted
           try {
-            chrome.storage.local.set(options, function () {
+            chrome.storage.local.set({ "twitter-like-hider-options": options }, function () {
               setStatus("Options saved", "success");
               saveButton.setAttribute("disabled", true);
             });

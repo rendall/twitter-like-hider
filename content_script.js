@@ -13,7 +13,8 @@ const TWEET_SELECTOR = ["article[role=article]"];
 // usually next to "Retweeted" "Liked" "Follows" "Replied" "Received a
 // Reply" and so forth. This is the icon within the header
 const TWEET_HEADERS = [
-  "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr.r-1xzupcd",
+  "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr.r-1xzupcd", // any header next to replied
+  "svg.r-jwli3a.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-9cviqr.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr" // blue checks, which are next to the name
 ];
 
 // Identify the offending tweet by the icon in its header, and hide
@@ -69,7 +70,7 @@ function restoreOptions() {
   console.log("twitterLikesHider:content_script.js:restoreOptions()");
 
   if (chrome.storage)
-    chrome.storage.local.get(options, function (items) {
+    chrome.storage.local.get("twitter-like-hider-options", function (items) {
       console.log(
         "twitterLikesHider:restoreOptions():chrome.storage.local.get",
         items
@@ -181,5 +182,11 @@ const onMessage = (message, sender, sendResponse) => {
   }
   return true;
 };
-chrome.runtime.onMessage.addListener(onMessage);
-restoreOptions();
+
+const contentSetup = () => {
+  chrome.runtime.onMessage.addListener(onMessage);
+  if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions)
+  restoreOptions();
+}
+
+contentSetup()
