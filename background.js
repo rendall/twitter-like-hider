@@ -21,7 +21,7 @@ let totalRemoved = 0;
 /** onResponse receives and handles messages from content_script.js
  **/
 const onResponse = (tabId) => (response) => {
-  console.log("TwitterLikesHider:background:onResponse", tabId, response);
+  // console.log("TwitterLikesHider:background:onResponse", tabId, response);
   if (response)
     switch (response.type) {
       case "isOff":

@@ -70,28 +70,23 @@ const optionMap = {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  console.log("TwitterLikesHider:content_script.js:restoreOptions()");
+  //console.log("TwitterLikesHider:content_script.js:restoreOptions()");
 
   if (chrome.storage)
     chrome.storage.local.get("twitter-like-hider-options", function (items) {
       const storedOptions = items["twitter-like-hider-options"];
       options = storedOptions ? storedOptions : options;
-      console.log(
-        "twitterLikesHider:restoreOptions():chrome.storage.local.get",
-        items,
-        options
-      );
+      //console.log("TwitterLikesHider:restoreOptions():chrome.storage.local.get", items, options);
     });
-  else
-    console.log(
-      "twitterLikesHider: storage not permitted, using default options",
-      options
-    );
+  else {
+    //console.log( "TwitterLikesHider: storage not permitted, using default options", options);
+    options = defaultOptions;
+  }
 }
 
 const hideLikeTweets = () => {
   const isMain = isMainFeed();
-  console.log("TwitterLikesHider: hideLikeTweets:isMain?", isMain);
+  //console.log("TwitterLikesHider: hideLikeTweets:isMain?", isMain);
   if (!isMain) return;
   const allTweets = Array.from(document.querySelectorAll(TWEET_SELECTOR));
   const tweetsWithHeaders = allTweets.filter((tweet) =>
@@ -113,11 +108,7 @@ const hideLikeTweets = () => {
       )
   );
   offendingTweets.forEach((tweet) => tweet.classList.add(TWEET_HIDE_CLASS));
-  console.log("TwitterLikesHider: hideLikeTweets()", {
-    likeTweetsNum,
-    offendingTweets,
-    options,
-  });
+  //console.log("TwitterLikesHider: hideLikeTweets()", { likeTweetsNum, offendingTweets, options, });
   likeTweetsNum = offendingTweets.length;
 };
 const showLikeTweets = () => {
@@ -131,11 +122,11 @@ const showLikeTweets = () => {
  * returns messages via the `sendResponse` method
  **/
 const onMessage = (message, sender, sendResponse) => {
-  console.log("TwitterLikesHider:content:onMessage", message);
+  //console.log("TwitterLikesHider:content:onMessage", message);
   const onScrollEnd = () => {
     // When the user *stops* scrolling, search for and hide any
     // offending tweet
-    console.log("TwitterLikesHider:content:onScrollEnd", isOn);
+    //console.log("TwitterLikesHider:content:onScrollEnd", isOn);
     if (isOn) hideLikeTweets();
   };
 
@@ -152,24 +143,22 @@ const onMessage = (message, sender, sendResponse) => {
   switch (message.type) {
     case "toggle":
       isOn = !isOn;
-      console.log("TwitterLikesHider:isOn", isOn);
+    //console.log("TwitterLikesHider:isOn", isOn);
     // no break deliberate
     case "webNavigation":
     case "alarm":
       if (!isOn) {
         showLikeTweets();
         sendResponse({ type: "isOff" });
-        console.log("TwitterLikesHider: scroll listener removed");
+        //console.log("TwitterLikesHider: scroll listener removed");
         document.removeEventListener("scroll", onScrollListener);
         break;
       }
       const isMain = isMainFeed();
-      console.log(
-        `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`
-      );
+      //console.log( `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`);
       if (isMain) {
         document.addEventListener("scroll", onScrollListener);
-        console.log("TwitterLikesHider: scroll listener added");
+        //console.log("TwitterLikesHider: scroll listener added");
         hideLikeTweets();
         sendResponse({ type: "isOn", value: likeTweetsNum });
       }
@@ -177,7 +166,7 @@ const onMessage = (message, sender, sendResponse) => {
       break;
 
     case "optionChange":
-      console.log("TwitterLikesHider: optionChange", { message });
+      //console.log("TwitterLikesHider: optionChange", { message });
       options = message.value;
       hideLikeTweets();
       break;
