@@ -14,7 +14,7 @@ const TWEET_SELECTOR = ["article[role=article]"];
 // Reply" and so forth. This is the icon within the header
 const TWEET_HEADERS = [
   "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr.r-1xzupcd", // any header next to replied
-  "svg.r-jwli3a.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-9cviqr.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr" // blue checks, which are next to the name
+  "svg.r-jwli3a.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-9cviqr.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // blue checks, which are next to the name
 ];
 
 // Identify the offending tweet by the icon in its header, and hide
@@ -46,15 +46,18 @@ let isOn = true;
 let scrollTimeout;
 // holds the number of likeTweets removed
 let likeTweetsNum = 0;
-// holds options
-let options = {
+
+const defaultOptions = {
   follows: true,
   likes: true,
   received: false,
   retweeted: false,
-  store: false,
+  store: true, //
   verified: false,
 };
+
+// holds options
+let options = defaultOptions;
 // map options to icons
 const optionMap = {
   follows: FOLLOW_ICON,
@@ -67,15 +70,17 @@ const optionMap = {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  console.log("twitterLikesHider:content_script.js:restoreOptions()");
+  console.log("TwitterLikesHider:content_script.js:restoreOptions()");
 
   if (chrome.storage)
     chrome.storage.local.get("twitter-like-hider-options", function (items) {
+      const storedOptions = items["twitter-like-hider-options"];
+      options = storedOptions ? storedOptions : options;
       console.log(
         "twitterLikesHider:restoreOptions():chrome.storage.local.get",
-        items
+        items,
+        options
       );
-      options = items;
     });
   else
     console.log(
@@ -86,6 +91,7 @@ function restoreOptions() {
 
 const hideLikeTweets = () => {
   const isMain = isMainFeed();
+  console.log("TwitterLikesHider: hideLikeTweets:isMain?", isMain);
   if (!isMain) return;
   const allTweets = Array.from(document.querySelectorAll(TWEET_SELECTOR));
   const tweetsWithHeaders = allTweets.filter((tweet) =>
@@ -125,10 +131,11 @@ const showLikeTweets = () => {
  * returns messages via the `sendResponse` method
  **/
 const onMessage = (message, sender, sendResponse) => {
-  console.log("TwitterLikesHider onMessage", message);
+  console.log("TwitterLikesHider:content:onMessage", message);
   const onScrollEnd = () => {
     // When the user *stops* scrolling, search for and hide any
     // offending tweet
+    console.log("TwitterLikesHider:content:onScrollEnd", isOn);
     if (isOn) hideLikeTweets();
   };
 
@@ -145,26 +152,28 @@ const onMessage = (message, sender, sendResponse) => {
   switch (message.type) {
     case "toggle":
       isOn = !isOn;
+      console.log("TwitterLikesHider:isOn", isOn);
     // no break deliberate
     case "webNavigation":
     case "alarm":
-      document.removeEventListener("scroll", onScrollListener);
-      console.log("TwitterLikesHider: scroll listener removed");
       if (!isOn) {
         showLikeTweets();
         sendResponse({ type: "isOff" });
+        console.log("TwitterLikesHider: scroll listener removed");
+        document.removeEventListener("scroll", onScrollListener);
         break;
       }
       const isMain = isMainFeed();
+      console.log(
+        `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`
+      );
       if (isMain) {
         document.addEventListener("scroll", onScrollListener);
         console.log("TwitterLikesHider: scroll listener added");
         hideLikeTweets();
         sendResponse({ type: "isOn", value: likeTweetsNum });
       }
-      console.log(
-        `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`
-      );
+
       break;
 
     case "optionChange":
@@ -185,8 +194,8 @@ const onMessage = (message, sender, sendResponse) => {
 
 const contentSetup = () => {
   chrome.runtime.onMessage.addListener(onMessage);
-  if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions)
+  if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions);
   restoreOptions();
-}
+};
 
-contentSetup()
+contentSetup();

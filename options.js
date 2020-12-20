@@ -24,10 +24,13 @@ function applyOptions() {
         if (isPermitted) {
           // Local storage is permitted
           try {
-            chrome.storage.local.set({ "twitter-like-hider-options": options }, function () {
-              setStatus("Options saved", "success");
-              saveButton.setAttribute("disabled", true);
-            });
+            chrome.storage.local.set(
+              { "twitter-like-hider-options": options },
+              function () {
+                setStatus("Options saved", "success");
+                saveButton.setAttribute("disabled", true);
+              }
+            );
           } catch (error) {
             console.error("twitterLikesHider:", { error });
             setStatus(`Options not saved ${error.message}`, "error");
@@ -55,8 +58,36 @@ function applyOptions() {
     );
   } else {
     // The user does not want to store these options locally
-    setStatus("Options applied to Twitter, but not saved");
-    // chrome.permissions.remove({ permissions: ["storage"] });
+    // This option is working, but hidden on the options page
+    // The interaction of states may be confusing from a UXD perspective
+    chrome.permissions.contains(
+      {
+        permissions: ["storage"],
+      },
+      function (isPermitted) {
+        if (isPermitted) {
+          chrome.storage.local.get(
+            "twitter-like-hider-options",
+            function (items) {
+              const hasStoredOptions = items
+                ? !!items["twitter-like-hider-options"]
+                : false;
+              chrome.storage.local.set({ "twitter-like-hider-options": null });
+              if (hasStoredOptions)
+                setStatus(
+                  "Options applied. On reload, options will revert to default"
+                );
+              else setStatus("Options applied, not saved");
+              console.log("twitterLikesHider:applyOptions:setStatus", {
+                items,
+                hasStoredOptions,
+                options,
+              });
+            }
+          );
+        } else setStatus("Options applied, not saved");
+      }
+    );
   }
 
   chrome.runtime.sendMessage({ type: "optionChange", value: options });
@@ -79,7 +110,7 @@ function restoreOptions() {
     likes: true,
     retweeted: false,
     received: false,
-    store: false,
+    store: true, // 'store:false' is an experimental option only
   };
   console.log("twitterLikesHider:restoreOptions()");
   const setChecked = (keyVals) =>
@@ -96,13 +127,19 @@ function restoreOptions() {
         isPermitted
       );
       if (isPermitted && chrome.storage) {
-        chrome.storage.local.get(defaultOptions, function (items) {
-          console.log(
-            "twitterLikesHider:options.js:restoreOptions():chrome.storage.local.get",
-            items
-          );
-          setChecked(items);
-        });
+        chrome.storage.local.get(
+          "twitter-like-hider-options",
+          function (items) {
+            const options = items ? items["twitter-like-hider-options"] : null;
+            console.log(
+              "twitterLikesHider:options.js:restoreOptions():chrome.storage.local.get",
+              items,
+              options
+            );
+            if (options) setChecked(options);
+            else setChecked(defaultOptions);
+          }
+        );
       } else setChecked(defaultOptions);
     }
   );
@@ -118,7 +155,7 @@ const optionsSetup = () => {
   );
   optionsCheckboxes.forEach((input) =>
     input.addEventListener("change", () => {
-      setStatus("Click the Apply button to set these options");
+      setStatus("Click the Save button to set these options");
       var saveButton = document.getElementById("apply-button");
       saveButton.removeAttribute("disabled");
     })
@@ -127,7 +164,7 @@ const optionsSetup = () => {
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", restoreOptions);
   else restoreOptions();
-  setStatus("Change options then click 'Apply'");
+  setStatus("Change options then click 'Save'");
 };
 
 optionsSetup();

@@ -3,29 +3,58 @@
   <head>
     <title>Twitter 'Likes' Hider options</title>
     <style>
-      body {
+      main {
         display: flex;
         flex-direction: column;
-        margin-top: 0;
+        margin: 1rem auto;
+        padding: 1rem;
+        max-width: 25rem;
+        box-shadow: rgba(53, 53, 53, 0.25) 0px 10px 35px 3px;
       }
 
-      p {
-        margin: 0;
-        margin-top: 1rem;
+      h1 {
+        text-align: center;
+        margin: 0 0 1rem 0;
+        font-size: 1.3rem;
       }
 
       p:first-of-type {
         margin-top: 0;
       }
 
+      input {
+        cursor: pointer;
+      }
+
       label {
         display: inline-block;
-        width: 5rem;
         margin-left: 1rem;
+        cursor: pointer;
+      }
+
+      label:hover {
+        font-weight: bold;
+      }
+
+      button {
+        width: 5rem;
+        align-self: center;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: unset;
       }
 
       label[for="store"] {
         width: max-content;
+      }
+
+      svg.icon {
+        width: 1rem;
+        vertical-align: bottom;
+        margin-right: 0.5rem;
+        fill: gray;
       }
 
       div#status {
@@ -40,38 +69,111 @@
       div#status.success {
         color: mediumseagreen;
       }
+
+      .hide {
+        display: none;
+      }
     </style>
   </head>
 
   <body>
-    <p>Check the box to hide these sorts of Tweets:</p>
-    <div>
-      <label for="likes">Likes:</label
-      ><input type="checkbox" id="likes" name="likes" />
-    </div>
-    <div>
-      <label for="follows">Follows:</label
-      ><input type="checkbox" id="follows" name="follows" />
-    </div>
-    <div>
-      <label for="retweeted">Retweeted:</label
-      ><input type="checkbox" id="retweeted" name="retweeted" />
-    </div>
-    <div>
-      <label for="received">Received a reply:</label
-      ><input type="checkbox" id="received" name="received" />
-    </div>
-    <div>
-      <label for="verified">Verified accounts / "Blue Check"</label
-      ><input type="checkbox" id="verified" name="verified" />
-    </div>
-    <p>Check here to keep these options (may require permission)</p>
-    <div>
-      <label for="store">Keep my options:</label>
-      <input type="checkbox" id="store" />
-    </div>
-    <div id="status"></div>
-    <button id="apply-button">Apply</button>
+    <main>
+      <h1>Twitter 'Likes' Hider Options</h1>
+      <p>Indicate here which sorts of Tweets to hide:</p>
+      <div>
+        <input type="checkbox" id="likes" />
+        <label for="likes"
+          ><svg
+            class="icon"
+            viewBox="0 0 24 24"
+            class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"
+          >
+            <g>
+              <path
+                d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"
+              ></path>
+            </g>
+          </svg>
+          Likes</label
+        >
+      </div>
+      <div>
+        <input type="checkbox" id="follows" />
+        <label for="follows"
+          ><svg
+            class="icon"
+            viewBox="0 0 24 24"
+            class="r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd"
+          >
+            <g>
+              <path
+                d="M12.225 12.165c-1.356 0-2.872-.15-3.84-1.256-.814-.93-1.077-2.368-.805-4.392.38-2.826 2.116-4.513 4.646-4.513s4.267 1.687 4.646 4.513c.272 2.024.008 3.46-.806 4.392-.97 1.106-2.485 1.255-3.84 1.255zm5.849 9.85H6.376c-.663 0-1.25-.28-1.65-.786-.422-.534-.576-1.27-.41-1.968.834-3.53 4.086-5.997 7.908-5.997s7.074 2.466 7.91 5.997c.164.698.01 1.434-.412 1.967-.4.505-.985.785-1.648.785z"
+              ></path>
+            </g>
+          </svg>
+          Follows</label
+        >
+      </div>
+      <div>
+        <input type="checkbox" id="retweeted" />
+        <label for="retweeted"
+          ><svg
+            class="icon"
+            viewBox="0 0 24 24"
+            class="r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd"
+          >
+            <g>
+              <path
+                d="M23.615 15.477c-.47-.47-1.23-.47-1.697 0l-1.326 1.326V7.4c0-2.178-1.772-3.95-3.95-3.95h-5.2c-.663 0-1.2.538-1.2 1.2s.537 1.2 1.2 1.2h5.2c.854 0 1.55.695 1.55 1.55v9.403l-1.326-1.326c-.47-.47-1.23-.47-1.697 0s-.47 1.23 0 1.697l3.374 3.375c.234.233.542.35.85.35s.613-.116.848-.35l3.375-3.376c.467-.47.467-1.23-.002-1.697zM12.562 18.5h-5.2c-.854 0-1.55-.695-1.55-1.55V7.547l1.326 1.326c.234.235.542.352.848.352s.614-.117.85-.352c.468-.47.468-1.23 0-1.697L5.46 3.8c-.47-.468-1.23-.468-1.697 0L.388 7.177c-.47.47-.47 1.23 0 1.697s1.23.47 1.697 0L3.41 7.547v9.403c0 2.178 1.773 3.95 3.95 3.95h5.2c.664 0 1.2-.538 1.2-1.2s-.535-1.2-1.198-1.2z"
+              ></path>
+            </g></svg
+          >Retweeted</label
+        >
+      </div>
+      <div class="hide">
+        <!-- Received a reply / Replied tweets actually cover two tweets, so this is hidden until a future update -->
+        <input type="checkbox" id="received" />
+        <label for="received"
+          ><svg
+            class="icon"
+            viewBox="0 0 24 24"
+            class="r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd"
+          >
+            <g>
+              <path
+                d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788z"
+              ></path>
+            </g>
+          </svg>
+          Replied / Received a reply</label
+        >
+      </div>
+      <div>
+        <input type="checkbox" id="verified" />
+        <label for="verified"
+          ><svg
+            class="icon"
+            viewBox="0 0 24 24"
+            aria-label="Verified account"
+            class="r-jwli3a r-4qtqp9 r-yyyyoo r-1xvli5t r-9cviqr r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"
+          >
+            <g>
+              <path
+                d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"
+              ></path>
+            </g>
+          </svg>
+          Verified accounts / "Blue Check"</label
+        >
+      </div>
+      <div class="hide">
+        <!-- this is an experimental feature that may be confusing for most users, so it is hidden for now -->
+        <input type="checkbox" id="store" checked />
+        <label for="store">Save these options</label>
+      </div>
+      <div id="status"></div>
+      <button id="apply-button">Save</button>
+    </main>
     <script src="options.js"></script>
   </body>
 </html>
