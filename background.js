@@ -21,6 +21,7 @@ let totalRemoved = 0;
 /** onResponse receives and handles messages from content_script.js
  **/
 const onResponse = (tabId) => (response) => {
+  // console.log("TwitterLikesHider:background:onResponse", tabId, response);
   if (response)
     switch (response.type) {
       case "isOff":
@@ -42,8 +43,9 @@ const onResponse = (tabId) => (response) => {
       case "isOn":
         totalRemoved = response.value;
         chrome.pageAction.setTitle({
-          title: `Hiding ${totalRemoved} ${totalRemoved === 1 ? "tweet" : "tweets"
-            }`,
+          title: `Hiding ${totalRemoved} ${
+            totalRemoved === 1 ? "tweet" : "tweets"
+          }`,
           tabId: tabId,
         });
         chrome.pageAction.setIcon({
@@ -56,8 +58,12 @@ const onResponse = (tabId) => (response) => {
         });
         createOrContinueAlarm(tabId);
         break;
+      case "optionChange":
+        // pass the options to the content page
+        chrome.tabs.sendMessage(tabId, response);
+        break;
       default:
-        console.error(`unknown response`, response);
+        console.error(`TwitterLikesHider: unknown response`, response);
         break;
     }
 };
@@ -91,6 +97,7 @@ const onNavToTwitter = (e) => {
   const tabId = e.tabId;
   chrome.pageAction.show(tabId);
   chrome.tabs.sendMessage(tabId, { type: "webNavigation" }, onResponse(tabId));
+  chrome.runtime.onMessage.addListener(onResponse(tabId));
 };
 
 chrome.webNavigation.onCompleted.addListener(onNavToTwitter, {

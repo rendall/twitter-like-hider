@@ -52,6 +52,20 @@ My preference is that you create an issue ticket on Github, here: https://github
 This extension is open source, which means you can see how it works yourself and even contribute to the project.
 More details here: https://github.com/rendall/twitter-like-hider
 
-## New in release 1.5
+## Change Log
+
+### New in release 1.6
+
+- Options! Right-click on the extension icon, select 'Options'.
+  - This shows a list of the types of Twits the 'Twitter Like Hider' can hide. Check a box to show them, _un_-check a box to hide them.
+  - Options are stored locally on the computer's browser
+- Expands the types of Twits that can be hidden:
+  - 'Likes'
+  - 'Follows'
+  - 'Retweeted'
+  - 'Received a reply'
+  - 'Replied'
+
+### New in release 1.5
 
 Twitter made the mistake of showing me 'like' and 'follows' Twits again, so I jumped on updating this immediately to hide the new Twits. I made it easier to update this in future and this version should eliminate the minute-long pause before the Twits are hidden

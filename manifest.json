@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.0",
   "manifest_version": 2,
   "name": "Twitter 'Likes' Hider",
   "short_name": "Likes Hider",
@@ -33,5 +33,6 @@
       "css": ["content_script.css"]
     }
   ],
-  "permissions": ["webNavigation", "alarms", "https://twitter.com/*"]
+  "options_page": "options.html",
+  "permissions": ["webNavigation", "storage", "alarms", "https://twitter.com/*"]
 }
