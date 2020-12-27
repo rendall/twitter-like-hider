@@ -13,7 +13,7 @@ const TWEET_SELECTOR = ["article[role=article]"];
 // usually next to "Retweeted" "Liked" "Follows" "Replied" "Received a
 // Reply" and so forth. This is the icon within the header
 const TWEET_HEADERS = [
-  "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr.r-1xzupcd", // any header next to replied
+  "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // any header next to replied
   "svg.r-jwli3a.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-9cviqr.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // blue checks, which are next to the name
 ];
 
@@ -46,6 +46,10 @@ let isOn = true;
 let scrollTimeout;
 // holds the number of likeTweets removed
 let likeTweetsNum = 0;
+// holds the disconnect function for the main element mutation observer
+let mutationObserver;
+// whether scroll event listener is attached to the dom
+let hasScrollListener = false;
 
 const defaultOptions = {
   follows: true,
@@ -67,36 +71,54 @@ const optionMap = {
   verified: BLUE_CHECK_ICON,
 };
 
+const debugLog = (...data) => {
+  const isdebug = options && options.debug === true;
+  if (isdebug) console.info.apply(null, data);
+};
+
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  //console.log("TwitterLikesHider:content_script.js:restoreOptions()");
+  debugLog("TwitterLikesHider:content_script.js:restoreOptions()");
 
   if (chrome.storage)
     chrome.storage.local.get("twitter-like-hider-options", function (items) {
       const storedOptions = items["twitter-like-hider-options"];
       options = storedOptions ? storedOptions : options;
-      //console.log("TwitterLikesHider:restoreOptions():chrome.storage.local.get", items, options);
+      debugLog(
+        "TwitterLikesHider:restoreOptions():chrome.storage.local.get",
+        items,
+        options
+      );
     });
   else {
-    //console.log( "TwitterLikesHider: storage not permitted, using default options", options);
+    debugLog(
+      "TwitterLikesHider: storage not permitted, using default options",
+      options
+    );
     options = defaultOptions;
   }
 }
 
 const hideLikeTweets = () => {
   const isMain = isMainFeed();
-  //console.log("TwitterLikesHider: hideLikeTweets:isMain?", isMain);
+  debugLog(
+    "TwitterLikesHider: hideLikeTweets:isMain?",
+    isMain,
+    document.location.href
+  );
   if (!isMain) return;
   const allTweets = Array.from(document.querySelectorAll(TWEET_SELECTOR));
   const tweetsWithHeaders = allTweets.filter((tweet) =>
     TWEET_HEADERS.some((selector) => !!tweet.querySelector(selector))
   );
 
+  debugLog("TwitterLikesHider:hideLikeTweets:allTweets", allTweets);
+
   // These are the icons of the types of tweets that are set to
   // 'true' in options and are used to find offending tweets
   const offendingTweetIcons = Object.keys(options)
-    .filter((key) => key !== "store")
+    .filter((key) => optionMap[key])
     .filter((key) => options[key])
     .map((key) => optionMap[key]);
 
@@ -108,7 +130,11 @@ const hideLikeTweets = () => {
       )
   );
   offendingTweets.forEach((tweet) => tweet.classList.add(TWEET_HIDE_CLASS));
-  //console.log("TwitterLikesHider: hideLikeTweets()", { likeTweetsNum, offendingTweets, options, });
+  debugLog("TwitterLikesHider: hideLikeTweets()", {
+    likeTweetsNum,
+    offendingTweets,
+    options,
+  });
   likeTweetsNum = offendingTweets.length;
 };
 const showLikeTweets = () => {
@@ -117,19 +143,21 @@ const showLikeTweets = () => {
   return hiddenLikeTweets.length;
 };
 
-/**
- * onMessage receives and handles messages from 'background.js', and
- * returns messages via the `sendResponse` method
- **/
-const onMessage = (message, sender, sendResponse) => {
-  //console.log("TwitterLikesHider:content:onMessage", message);
+const hideIfMain = (sendResponse) => {
   const onScrollEnd = () => {
     // When the user *stops* scrolling, search for and hide any
     // offending tweet
-    //console.log("TwitterLikesHider:content:onScrollEnd", isOn);
+    debugLog("TwitterLikesHider:content:onScrollEnd", isOn);
     if (isOn) hideLikeTweets();
+    if (mutationObserver) {
+      debugLog(
+        "TwitterLikesHider:content:onScrollEnd:mutationObserver",
+        mutationObserver
+      );
+      mutationObserver.disconnect();
+      mutationObserver = null;
+    }
   };
-
   const onScrollListener = (e) => {
     // Twitter dynamically adds and removes Tweets when the user
     // scrolls, so the scroll listener listens for a scroll event. But
@@ -140,33 +168,54 @@ const onMessage = (message, sender, sendResponse) => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(onScrollEnd, 100);
   };
+  const isMain = isMainFeed();
+  debugLog(
+    `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`
+  );
+  if (isMain) {
+    if (!hasScrollListener) {
+      document.addEventListener("scroll", onScrollListener);
+      debugLog("TwitterLikesHider: scroll listener added");
+      hasScrollListener = true;
+    }
+    hideLikeTweets();
+    if (sendResponse) sendResponse({ type: "isOn", value: likeTweetsNum });
+  }
+};
+/**
+ * onMessage receives and handles messages from 'background.js', and
+ * returns messages via the `sendResponse` method
+ **/
+const onMessage = (message, sender, sendResponse) => {
+  debugLog("TwitterLikesHider:content:onMessage", message);
+
   switch (message.type) {
     case "toggle":
       isOn = !isOn;
-    //console.log("TwitterLikesHider:isOn", isOn);
+      debugLog("TwitterLikesHider:isOn", isOn);
+      if (mutationObserver) {
+        debugLog(
+          "TwitterLikesHider:content:onScrollEnd:mutationObserver",
+          mutationObserver
+        );
+        mutationObserver.disconnect();
+        mutationObserver = null;
+      }
     // no break deliberate
     case "webNavigation":
     case "alarm":
-      if (!isOn) {
+      if (isOn) hideIfMain(sendResponse);
+      else {
         showLikeTweets();
         sendResponse({ type: "isOff" });
-        //console.log("TwitterLikesHider: scroll listener removed");
-        document.removeEventListener("scroll", onScrollListener);
+        debugLog("TwitterLikesHider: scroll listener removed");
+        // document.removeEventListener("scroll", onScrollListener);
         break;
       }
-      const isMain = isMainFeed();
-      //console.log( `TwitterLikesHider: isMain? ${isMain} @ href:${document.location.href}`);
-      if (isMain) {
-        document.addEventListener("scroll", onScrollListener);
-        //console.log("TwitterLikesHider: scroll listener added");
-        hideLikeTweets();
-        sendResponse({ type: "isOn", value: likeTweetsNum });
-      }
-
       break;
 
     case "optionChange":
-      //console.log("TwitterLikesHider: optionChange", { message });
+      debugLog("TwitterLikesHider: optionChange", { message });
       options = message.value;
       hideLikeTweets();
       break;
@@ -181,10 +230,35 @@ const onMessage = (message, sender, sendResponse) => {
   return true;
 };
 
+const onDomLoaded = () => {
+  debugLog("TwitterLikesHider: onDomLoaded");
+  hideIfMain();
+
+  // Sometimes the first tweet on page load is an offending tweet
+  // Without attention, this tweet will remain until the user scrolls
+  // Add a mutation observer for the time when the page has loaded
+  // but the user has not yet scrolled. Since mutation observer
+  // triggers several times a second, remove it again once the user
+  // scrolls
+
+  let targetNode = document.querySelector("#react-root");
+  debugLog("TwitterLikesHider:targetNode", targetNode);
+  mutationObserver = new MutationObserver(() => hideIfMain());
+  mutationObserver.observe(targetNode, {
+    attributes: false,
+    childList: true,
+    subtree: true,
+  });
+  disconnectObserver = mutationObserver.disconnect;
+};
+
 const contentSetup = () => {
   chrome.runtime.onMessage.addListener(onMessage);
   if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions);
   restoreOptions();
+  if (document.readyState === "loading")
+    document.addEventListener("load", onDomLoaded);
+  else onDomLoaded();
 };
 
 contentSetup();

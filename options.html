@@ -14,12 +14,14 @@
 
       h1 {
         text-align: center;
-        margin: 0 0 1rem 0;
+        margin: 0;
         font-size: 1.3rem;
       }
 
-      p:first-of-type {
-        margin-top: 0;
+      .option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
       }
 
       input {
@@ -80,7 +82,7 @@
     <main>
       <h1>Twitter 'Likes' Hider Options</h1>
       <p>Indicate here which sorts of Tweets to hide:</p>
-      <div>
+      <div class="option">
         <input type="checkbox" id="likes" />
         <label for="likes"
           ><svg
@@ -97,7 +99,7 @@
           Likes</label
         >
       </div>
-      <div>
+      <div class="option">
         <input type="checkbox" id="follows" />
         <label for="follows"
           ><svg
@@ -114,7 +116,7 @@
           Follows</label
         >
       </div>
-      <div>
+      <div class="option">
         <input type="checkbox" id="retweeted" />
         <label for="retweeted"
           ><svg
@@ -130,7 +132,7 @@
           >Retweeted</label
         >
       </div>
-      <div class="hide">
+      <div class="hide option">
         <!-- Received a reply / Replied tweets actually cover two tweets, so this is hidden until a future update -->
         <input type="checkbox" id="received" />
         <label for="received"
@@ -148,7 +150,7 @@
           Replied / Received a reply</label
         >
       </div>
-      <div>
+      <div class="option">
         <input type="checkbox" id="verified" />
         <label for="verified"
           ><svg
@@ -166,13 +168,28 @@
           Verified accounts / "Blue Check"</label
         >
       </div>
-      <div class="hide">
+      <div class="hide option">
         <!-- this is an experimental feature that may be confusing for most users, so it is hidden for now -->
         <input type="checkbox" id="store" checked />
         <label for="store">Save these options</label>
       </div>
       <div id="status"></div>
       <button id="apply-button">Save</button>
+      <hr />
+      <div>
+        <p>
+          Debug mode enables
+          <a
+            href="https://developers.google.com/web/tools/chrome-devtools/console/log"
+            >console messages</a
+          >. This is for developer troubleshooting. No need to check it
+          unless you've been given instructions
+        </p>
+        <div class="option">
+          <input type="checkbox" id="debug" />
+          <label for="debug">Enable debug mode</label>
+        </div>
+      </div>
     </main>
     <script src="options.js"></script>
   </body>

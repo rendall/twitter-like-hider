@@ -18,10 +18,17 @@ From the chrome api, the extension needs to know:
 const ALARM_PREFIX = "twitterLikeHiderAlarm";
 let totalRemoved = 0;
 
+let options;
+
+const debugLog = (...data) => {
+  const isdebug = options && options.debug === true;
+  if (isdebug) console.info.apply(null, data);
+};
+
 /** onResponse receives and handles messages from content_script.js
  **/
 const onResponse = (tabId) => (response) => {
-  // console.log("TwitterLikesHider:background:onResponse", tabId, response);
+  debugLog("TwitterLikesHider:background:onResponse", tabId, response);
   if (response)
     switch (response.type) {
       case "isOff":
@@ -60,6 +67,7 @@ const onResponse = (tabId) => (response) => {
         break;
       case "optionChange":
         // pass the options to the content page
+        options = response;
         chrome.tabs.sendMessage(tabId, response);
         break;
       default:
