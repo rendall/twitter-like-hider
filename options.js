@@ -1,18 +1,36 @@
+const defaultOptions = {
+  follows: true,
+  likes: true,
+  retweeted: false,
+  received: false,
+  debug: false,
+  store: true, // 'store:false' is an experimental option only
+};
+
+let options = defaultOptions;
+
+const debugLog = (...data) => {
+  const isdebug = options && options.debug === true;
+  if (isdebug) console.info.apply(null, data);
+};
+
 // Saves options to chrome.storage
 function applyOptions() {
-  // console.log("TwitterLikesHider:applyOptions()");
+  debugLog("TwitterLikesHider:applyOptions()");
 
   const optionsCheckboxes = Array.from(
     document.querySelectorAll("input[type=checkbox]")
   );
-  const options = optionsCheckboxes.reduce(
+  const checkedOptions = optionsCheckboxes.reduce(
     (opt, checkbox) => ({ ...opt, [checkbox.id]: checkbox.checked }),
     {}
   );
 
+  options = checkedOptions;
+
   var saveButton = document.getElementById("apply-button");
 
-  if (options.store) {
+  if (checkedOptions.store) {
     // The user wants to store options
     // check if permitted:
     chrome.permissions.contains(
@@ -20,12 +38,12 @@ function applyOptions() {
         permissions: ["storage"],
       },
       function (isPermitted) {
-        // console.log("TwitterLikesHider:storage.isPermitted", isPermitted);
+        debugLog("TwitterLikesHider:storage.isPermitted", isPermitted);
         if (isPermitted) {
           // Local storage is permitted
           try {
             chrome.storage.local.set(
-              { "twitter-like-hider-options": options },
+              { "twitter-like-hider-options": checkedOptions },
               function () {
                 setStatus("Options saved", "success");
                 saveButton.setAttribute("disabled", true);
@@ -78,7 +96,11 @@ function applyOptions() {
                   "Options applied. On reload, options will revert to default"
                 );
               else setStatus("Options applied, not saved");
-              // console.log("TwitterLikesHider:applyOptions:setStatus", { items, hasStoredOptions, options, });
+              debugLog("TwitterLikesHider:applyOptions:setStatus", {
+                items,
+                hasStoredOptions,
+                options: checkedOptions,
+              });
             }
           );
         } else setStatus("Options applied, not saved");
@@ -86,7 +108,7 @@ function applyOptions() {
     );
   }
 
-  chrome.runtime.sendMessage({ type: "optionChange", value: options });
+  chrome.runtime.sendMessage({ type: "optionChange", value: checkedOptions });
 }
 
 function setStatus(message, type) {
@@ -101,31 +123,32 @@ function setStatus(message, type) {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  const defaultOptions = {
-    follows: true,
-    likes: true,
-    retweeted: false,
-    received: false,
-    store: true, // 'store:false' is an experimental option only
-  };
-  // console.log("TwitterLikesHider:restoreOptions()");
+  debugLog("TwitterLikesHider:restoreOptions()");
   const setChecked = (keyVals) =>
     Object.keys(keyVals).forEach((key) => {
-      document.getElementById(key).checked = keyVals[key];
+      if (document.getElementById(key))
+        document.getElementById(key).checked = keyVals[key];
     });
   chrome.permissions.contains(
     {
       permissions: ["storage"],
     },
     function (isPermitted) {
-      // console.log( "TwitterLikesHider:options.js:storage.isPermitted", isPermitted);
+      debugLog("TwitterLikesHider:options.js:storage.isPermitted", isPermitted);
       if (isPermitted && chrome.storage) {
         chrome.storage.local.get(
           "twitter-like-hider-options",
           function (items) {
-            const options = items ? items["twitter-like-hider-options"] : null;
-            // console.log( "TwitterLikesHider:options.js:restoreOptions():chrome.storage.local.get", items, options);
-            if (options) setChecked(options);
+            const restoredOptions = items
+              ? items["twitter-like-hider-options"]
+              : null;
+            options = restoredOptions ? restoredOptions : defaultOptions;
+            debugLog(
+              "TwitterLikesHider:options.js:restoreOptions():chrome.storage.local.get",
+              items,
+              restoredOptions
+            );
+            if (restoredOptions) setChecked(restoredOptions);
             else setChecked(defaultOptions);
           }
         );
@@ -135,7 +158,7 @@ function restoreOptions() {
 }
 
 const optionsSetup = () => {
-  // console.log("TwitterLikesHider:optionsSetup");
+  debugLog("TwitterLikesHider:optionsSetup");
   document
     .getElementById("apply-button")
     .addEventListener("click", applyOptions);

@@ -36,8 +36,14 @@ Clicking on the icon while active will toggle the view of the 'liked' tweets fro
 
 To see how many tweets are hidden, hover your cursor over the icon. If it has hidden any tweets, it will tell you how many. Or it will display:
 
-- _Twitter 'Likes' Hider_: means no 'like' tweets have been found in your feed, yet.
 - _Showing all likes_: the extension has been toggled to show 'liked' tweets. Click the icon to hide them.
+
+It is possible to hide other kinds of Tweets. To change the kinds of Tweets that are hidden, right-click on the extension icon and select _Options_. A new Chrome tab will open with a list of labeled checkboxes. Check the boxes next to the kinds of tweets you would like to hide: *Likes*, *Follows*, *Retweets*, or *Verified accounts / "Blue Check"*. The click the _Save_ button to apply the changes. It may be necessary to reload Twitter.
+
+### Known bugs
+
+- _Twitter Like Hider_ does not work for some users. If it does not work for you, contact me and we can figure it out. I suspect that Twitter has different versions for various countries.
+- Sometimes targeted Tweets are not hidden, especially if many show at once. Scrolling the page will probably trigger them to hide.
 
 ## Privacy Policy
 
@@ -65,6 +71,7 @@ More details here: https://github.com/rendall/twitter-like-hider
   - 'Retweeted'
   - 'Received a reply'
   - 'Replied'
+- Rudimentary troubleshooting or 'debug' mode, enabled via options
 
 ### New in release 1.5
 
