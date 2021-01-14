@@ -1,3 +1,5 @@
+![Twitter Likes Hider](icon-48.png)
+
 # Twitter 'Likes' Hider
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
@@ -34,6 +36,9 @@ After installing, the **Twitter 'Likes' Hider** icon will be visible to the righ
 
 Clicking on the icon while active will toggle the view of the 'liked' tweets from hidden to visible and back again.
 
+* Active icon (extension is active and tweets are hidden): ![Logo when active](icon-32.png)
+* Inactive icon (extension is inactive and all tweets are visible): ![Logo inactive](icon-off-32.png)
+
 To see how many tweets are hidden, hover your cursor over the icon. If it has hidden any tweets, it will tell you how many. Or it will display:
 
 - _Showing all likes_: the extension has been toggled to show 'liked' tweets. Click the icon to hide them.
@@ -43,7 +48,7 @@ It is possible to hide other kinds of Tweets. To change the kinds of Tweets that
 ### Known bugs
 
 - _Twitter Like Hider_ does not work for some users. If it does not work for you, contact me and we can figure it out. I suspect that Twitter has different versions for various countries.
-- Sometimes targeted Tweets are not hidden, especially if many show at once. Scrolling the page will probably trigger them to hide.
+- Sometimes targeted Tweets are not hidden, especially if many show at once. Scrolling the page a little usually hides them.
 
 ## Privacy Policy
 
