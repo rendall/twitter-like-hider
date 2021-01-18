@@ -78,14 +78,12 @@ const debugLog = (...data) => {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-  debugLog("TwitterLikesHider:content_script.js:restoreOptions()");
-
   if (chrome.storage)
     chrome.storage.local.get("twitter-like-hider-options", function (items) {
       const storedOptions = items["twitter-like-hider-options"];
       options = storedOptions ? storedOptions : options;
       debugLog(
-        "TwitterLikesHider:restoreOptions():chrome.storage.local.get",
+        "TwitterLikesHider: debug mode console logging is ENABLED. To turn it off, open extension options and uncheck",
         items,
         options
       );
@@ -254,9 +252,6 @@ const contentSetup = () => {
   chrome.runtime.onMessage.addListener(onMessage);
   if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions);
   restoreOptions();
-  debugLog(
-    "TwitterLikesHider: debug mode console logging is ON. Turn off using extension options."
-  );
   if (document.readyState === "loading")
     document.addEventListener("load", onDomLoaded);
   else onDomLoaded();
