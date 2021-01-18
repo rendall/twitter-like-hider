@@ -13,8 +13,7 @@ const TWEET_SELECTOR = ["article[role=article]"];
 // usually next to "Retweeted" "Liked" "Follows" "Replied" "Received a
 // Reply" and so forth. This is the icon within the header
 const TWEET_HEADERS = [
-  "svg.r-111h2gw.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // any header next to replied
-  "svg.r-jwli3a.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-9cviqr.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // blue checks, which are next to the name
+  "svg.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // any header icons
 ];
 
 // Identify the offending tweet by the icon in its header, and hide
@@ -249,13 +248,15 @@ const onDomLoaded = () => {
     childList: true,
     subtree: true,
   });
-  disconnectObserver = mutationObserver.disconnect;
 };
 
 const contentSetup = () => {
   chrome.runtime.onMessage.addListener(onMessage);
   if (chrome.storage) chrome.storage.onChanged.addListener(restoreOptions);
   restoreOptions();
+  debugLog(
+    "TwitterLikesHider: debug mode console logging is ON. Turn off using extension options."
+  );
   if (document.readyState === "loading")
     document.addEventListener("load", onDomLoaded);
   else onDomLoaded();
