@@ -65,7 +65,7 @@ More details here: https://github.com/rendall/twitter-like-hider
 
 ## Change Log
 
-## Bugfix 1.6.1
+### Bugfix 1.6.1
 
 - The extension worked only for 'Dim' background mode. This fix allows for 'Default' and 'Lights Out' modes as well.
   - Other minor fixes:
