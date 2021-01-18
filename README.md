@@ -36,14 +36,14 @@ After installing, the **Twitter 'Likes' Hider** icon will be visible to the righ
 
 Clicking on the icon while active will toggle the view of the 'liked' tweets from hidden to visible and back again.
 
-* Active icon (extension is active and tweets are hidden): ![Logo when active](icon-32.png)
-* Inactive icon (extension is inactive and all tweets are visible): ![Logo inactive](icon-off-32.png)
+- Active icon (extension is active and tweets are hidden): ![Logo when active](icon-32.png)
+- Inactive icon (extension is inactive and all tweets are visible): ![Logo inactive](icon-off-32.png)
 
 To see how many tweets are hidden, hover your cursor over the icon. If it has hidden any tweets, it will tell you how many. Or it will display:
 
 - _Showing all likes_: the extension has been toggled to show 'liked' tweets. Click the icon to hide them.
 
-It is possible to hide other kinds of Tweets. To change the kinds of Tweets that are hidden, right-click on the extension icon and select _Options_. A new Chrome tab will open with a list of labeled checkboxes. Check the boxes next to the kinds of tweets you would like to hide: *Likes*, *Follows*, *Retweets*, or *Verified accounts / "Blue Check"*. The click the _Save_ button to apply the changes. It may be necessary to reload Twitter.
+It is possible to hide other kinds of Tweets. To change the kinds of Tweets that are hidden, right-click on the extension icon and select _Options_. A new Chrome tab will open with a list of labeled checkboxes. Check the boxes next to the kinds of tweets you would like to hide: _Likes_, _Follows_, _Retweets_, or _Verified accounts / "Blue Check"_. The click the _Save_ button to apply the changes. It may be necessary to reload Twitter.
 
 ### Known bugs
 
@@ -64,6 +64,13 @@ This extension is open source, which means you can see how it works yourself and
 More details here: https://github.com/rendall/twitter-like-hider
 
 ## Change Log
+
+## Bugfix 1.6.1
+
+- The extension worked only for 'Dim' background mode. This fix allows for 'Default' and 'Lights Out' modes as well.
+  - Other minor fixes:
+  - Announce that 'Enable debug mode' is ON (if so) and inform user how to turn it off (in browser console).
+  - Remove extraneous unused variable assignment.
 
 ### New in release 1.6
 
