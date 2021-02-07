@@ -9,6 +9,8 @@
 
 While you can block, mute and mute retweets, on occasion Twitter will show you what someone you follow 'likes' or 'follows', and there is no way to mute that. This extension will hide those 'like' and 'follow' tweets, and let you toggle them on and off.
 
+![Screenshot of hypothetical offending Tweet](https://lh3.googleusercontent.com/xD-40V-VNvO8yI4s36E8UtfpKfyfiakeA1URh_8g0lPEHscJ00GENrN2OMzmigpwektHWiOo8hB6UV8HwDhELJZ6=w640-h400-e365-rj-sc0x00ffffff)
+
 ## Intro
 
 Are you on Twitter, but need to ensure that no wrongthink invades your echo chamber? Want to seal your filter bubble even tighter? Got all the idiots blocked, the dummies muted, and problematic retweets banned from your feed?
@@ -65,6 +67,13 @@ More details here: https://github.com/rendall/twitter-like-hider
 
 ## Change Log
 
+### New in 1.6.2
+
+Added 'Suggested Topics' to options. Checking 'Topics' will hide Twitter's "suggested topics" sections
+
+<details>
+<summary>Previous changes</summary>
+
 ### Bugfix 1.6.1
 
 - The extension worked only for 'Dim' background mode. This fix allows for 'Default' and 'Lights Out' modes as well.
@@ -88,3 +97,5 @@ More details here: https://github.com/rendall/twitter-like-hider
 ### New in release 1.5
 
 Twitter made the mistake of showing me 'like' and 'follows' Twits again, so I jumped on updating this immediately to hide the new Twits. I made it easier to update this in future and this version should eliminate the minute-long pause before the Twits are hidden
+
+</details>
