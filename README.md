@@ -5,32 +5,9 @@
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/price/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
 
-## TL;DR
-
-While you can block, mute and mute retweets, on occasion Twitter will show you what someone you follow 'likes' or 'follows', and there is no way to mute that. This extension will hide those 'like' and 'follow' tweets, and let you toggle them on and off.
+Twitter puts tweets in your feed that someone else 'likes' or 'follows', or suggests 'topics'. This extension allows you to hide those and other similar tweets.
 
 ![Screenshot of hypothetical offending Tweet](https://lh3.googleusercontent.com/xD-40V-VNvO8yI4s36E8UtfpKfyfiakeA1URh_8g0lPEHscJ00GENrN2OMzmigpwektHWiOo8hB6UV8HwDhELJZ6=w640-h400-e365-rj-sc0x00ffffff)
-
-## Intro
-
-Are you on Twitter, but need to ensure that no wrongthink invades your echo chamber? Want to seal your filter bubble even tighter? Got all the idiots blocked, the dummies muted, and problematic retweets banned from your feed?
-
-There is yet one more crack in your Twitter dam: sometimes, annoyingly, Twitter will show you what other people in your newsfeed 'like'. Who cares? You do! There you are, deep in harmonious clicktrance, seeing only ideas that make you happy, and then suddenly, Twitter shows you the 'like' of some misguided follower, and now your harmony is ruined as you spend the next several hours arguing with strangers on the internet. There is no way to block this either!
-
-Until now.
-
-**Twitter 'Likes' Hider** prevents that unhappy occurrence. Install it and be bothered no more with the likes and preferences of stupid, crazy and bad people!
-
-Note that **Twitter 'Likes' Hider** works only on your main Twitter feed. If you visit a profile and see something horrible that they like, well, you have only yourself to blame, don't you.
-
-NB: All of the above was irony, doncha know. Please do not call people you disagree with "idiots", and do broaden your political and social circles!
-
-## Installation
-
-Install the extension on Chrome via the Web Store link below, or download / clone the source code into a local directory, and then follow these instructions from Google to install it on your browser as a developer. https://developer.chrome.com/extensions/getstarted#unpacked
-
-On the Chrome Web Store:
-https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj
 
 ## Instructions
 
@@ -47,18 +24,20 @@ To see how many tweets are hidden, hover your cursor over the icon. If it has hi
 
 It is possible to hide other kinds of Tweets. To change the kinds of Tweets that are hidden, right-click on the extension icon and select _Options_. A new Chrome tab will open with a list of labeled checkboxes. Check the boxes next to the kinds of tweets you would like to hide: _Likes_, _Follows_, _Retweets_, or _Verified accounts / "Blue Check"_. The click the _Save_ button to apply the changes. It may be necessary to reload Twitter.
 
-### Known bugs
+## Installation
 
-- _Twitter Like Hider_ does not work for some users. If it does not work for you, contact me and we can figure it out. I suspect that Twitter has different versions for various countries.
-- Sometimes targeted Tweets are not hidden, especially if many show at once. Scrolling the page a little usually hides them.
+Easiest option for everyone: Install the extension on Chrome via the Web Store link: 
+https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj
+ 
+Or if you are a developer and want to sideload the code: download / clone the source code into a local directory from here: https://github.com/rendall/twitter-like-hider and then follow these instructions from Google to install it on your browser as a developer. https://developer.chrome.com/extensions/getstarted#unpacked
 
 ## Privacy Policy
 
 The creator of **Twitter 'Likes' Hider** has zero interest in tracking you. Your privacy is sacrosanct. No data will be kept, tracked, transferred, sold, traded, nor even coveted in any respect, from now until the end of time.
 
-## Have a comment? Question? Feature request?
+## Support: Have a comment? Question? Feature request?
 
-My preference is that you create an issue ticket on Github, here: https://github.com/rendall/twitter-like-hider/issues Just click the 'New issue' button and type away.
+Please follow this link and fill out the form: https://github.com/rendall/twitter-like-hider/issues/new
 
 ## Open Source!
 
@@ -67,12 +46,16 @@ More details here: https://github.com/rendall/twitter-like-hider
 
 ## Change Log
 
-### New in 1.6.2
+### Update 1.6.3
 
-Added 'Suggested Topics' to options. Checking 'Topics' will hide Twitter's "suggested topics" sections
+Twitter changed its code, which caused unwanted tweets to show. This update fixes those.
 
 <details>
 <summary>Previous changes</summary>
+
+### New in 1.6.2
+
+Added 'Suggested Topics' to options. Checking 'Topics' will hide Twitter's "suggested topics" sections
 
 ### Bugfix 1.6.1
 

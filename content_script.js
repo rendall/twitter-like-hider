@@ -13,7 +13,7 @@ const TWEET_SELECTOR = ["article[role=article]"];
 // usually next to "Retweeted" "Liked" "Follows" "Replied" "Received a
 // Reply" and so forth. This is the icon within the header
 const TWEET_HEADERS = [
-  "svg.r-4qtqp9.r-yyyyoo.r-1xvli5t.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // any header icons
+  "svg.r-4qtqp9.r-yyyyoo.r-dnmrzs.r-bnwqim.r-1plcrui.r-lrvibr", // any header icons
 ];
 
 // Identify the offending tweet by the icon in its header, and hide
@@ -115,6 +115,10 @@ const hideLikeTweets = () => {
   );
 
   debugLog("TwitterLikesHider:hideLikeTweets:allTweets", allTweets);
+  debugLog(
+    "TwitterLikesHider:hideLikeTweets:tweetsWithHeaders",
+    tweetsWithHeaders.map((t) => [t.innerText, t])
+  );
 
   // These are the icons of the types of tweets that are set to
   // 'true' in options and are used to find offending tweets
