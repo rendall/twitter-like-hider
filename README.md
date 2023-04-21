@@ -2,6 +2,20 @@
 
 # Twitter 'Likes' Hider
 
+_**Dear users,**_
+
+_**it is with mixed emotions that we announce the sunset of Twitter 'Likes' Hider. While we're proud of the impact this extension has had on your Twitter experience, we've decided to focus our efforts on other projects.**_
+
+_**We want to take this opportunity to thank you for your support and feedback over the years. It's been a pleasure to develop and maintain this extension for you.**_
+
+_**Please note that Twitter 'Likes' Hider will no longer receive updates or support. We encourage you to find an alternative solution for hiding liked tweets on Twitter. Currently, the "Following" tab seems to serve a similar function.**_
+
+_**Thank you so much for being a part of our journey, and we wish you all the best.**_
+
+_-- **Twitter 'Likes' Hider team**_
+
+This repository is *archived*.
+
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/price/dkcgnebncpfljfaaplmedjnfjifffagj)](https://chrome.google.com/webstore/detail/twitter-likes-hider/dkcgnebncpfljfaaplmedjnfjifffagj)
 
